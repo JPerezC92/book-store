@@ -15,21 +15,21 @@ import { ParseIntPipe } from '@nestjs/common';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly _userService: UserService) {}
 
   @Post()
   async create(@Body() user: User): Promise<UserDto> {
-    return await this.userService.create(user);
+    return await this._userService.create(user);
   }
 
   @Get()
   async findAll(): Promise<UserDto[]> {
-    return await this.userService.findAll();
+    return await this._userService.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<UserDto> {
-    return await this.userService.findOne(id);
+    return await this._userService.findOne(id);
   }
 
   @Patch(':id')
@@ -37,11 +37,11 @@ export class UserController {
     @Param('id', ParseIntPipe) id: number,
     @Body() user: User,
   ): Promise<void> {
-    await this.userService.update(id, user);
+    await this._userService.update(id, user);
   }
 
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    await this.userService.remove(id);
+    await this._userService.remove(id);
   }
 }

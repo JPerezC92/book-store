@@ -8,9 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-
 import { User } from './entities/user.entity';
-import { UserDto } from './dto/user.dto';
 import { ParseIntPipe } from '@nestjs/common';
 
 @Controller('users')
@@ -18,17 +16,17 @@ export class UserController {
   constructor(private readonly _userService: UserService) {}
 
   @Post()
-  async create(@Body() user: User): Promise<UserDto> {
+  async create(@Body() user: User): Promise<User> {
     return await this._userService.create(user);
   }
 
   @Get()
-  async findAll(): Promise<UserDto[]> {
+  async findAll(): Promise<User[]> {
     return await this._userService.findAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<UserDto> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return await this._userService.findOne(id);
   }
 

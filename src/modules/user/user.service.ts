@@ -2,11 +2,9 @@ import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getConnection } from 'typeorm';
-import { MapperService } from '../../shared/mapper.service';
 import { Role } from '../role/entities/role.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserDto } from './dto/user.dto';
 import { UsersDetails } from './entities/user.details.entity';
 import { User } from './entities/user.entity';
 import { UserRepository } from './entities/user.repository';
@@ -16,10 +14,9 @@ export class UserService {
   constructor(
     @InjectRepository(UserRepository)
     private readonly _userRepository: UserRepository,
-    private readonly _mapperService: MapperService,
   ) {}
 
-  async create(user: User) {
+  async create(user: User): Promise<User> {
     const details = new UsersDetails();
     user.details = details;
 
@@ -30,10 +27,10 @@ export class UserService {
     user.roles = [defaultRole];
 
     const savedUser: User = await this._userRepository.save(user);
-    return this._mapperService.map<User, UserDto>(savedUser, new UserDto());
+    return savedUser;
   }
 
-  async findAll(): Promise<UserDto[]> {
+  async findAll(): Promise<User[]> {
     const users = await this._userRepository.find({
       where: { status: 'ACTIVE' },
     });
@@ -41,13 +38,10 @@ export class UserService {
       throw new NotFoundException();
     }
 
-    return this._mapperService.mapCollection<User, UserDto>(
-      users,
-      new UserDto(),
-    );
+    return users;
   }
 
-  async findOne(id: number): Promise<UserDto> {
+  async findOne(id: number): Promise<User> {
     if (!id) {
       throw new BadRequestException('id must be provided');
     }
@@ -60,7 +54,7 @@ export class UserService {
       throw new NotFoundException();
     }
 
-    return this._mapperService.map<User, UserDto>(user, new UserDto());
+    return user;
   }
 
   async update(id: number, user: User): Promise<void> {

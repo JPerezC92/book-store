@@ -5,5 +5,5 @@ export interface IEnvironmentVariables {
   DATABASE_HOST: string;
   DATABASE_USERNAME: string;
   DATABASE_PASSWORD: string;
-  DATABASE_DATABASE: string;
+  JWT_SECRET: string;
 }

@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { ParseIntPipe } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UserController {
@@ -20,6 +22,7 @@ export class UserController {
     return await this._userService.create(user);
   }
 
+  @UseGuards(AuthGuard())
   @Get()
   async findAll(): Promise<User[]> {
     return await this._userService.findAll();

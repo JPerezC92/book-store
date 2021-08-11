@@ -14,6 +14,7 @@ import { ParseIntPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Roles } from '../role/decorators/role.decorator';
 import { RoleGuard } from '../role/guards/role.guard';
+import { RoleType } from '../role/roleType.enum';
 
 @Controller('users')
 export class UserController {
@@ -30,8 +31,8 @@ export class UserController {
     return await this._userService.findAll();
   }
 
-  @UseGuards(AuthGuard(), RoleGuard)
-  @Roles('ADMIN', 'AUTHOR')
+  // @Roles(RoleType.ADMINISTRATOR)
+  // @UseGuards(AuthGuard(), RoleGuard)
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
     return await this._userService.findOne(id);

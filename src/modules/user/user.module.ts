@@ -5,10 +5,11 @@ import { UserRepository } from './entities/user.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SharedModule } from '../../shared/shared.module';
 import { AuthModule } from '../auth/auth.module';
+import { RoleRepository } from '../role/entities/role.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserRepository]),
+    TypeOrmModule.forFeature([UserRepository, RoleRepository]),
     SharedModule,
     AuthModule,
   ],

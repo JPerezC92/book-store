@@ -12,6 +12,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UsersDetails } from './user.details.entity';
+import { Book } from '../../book/entities/book.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -47,4 +48,8 @@ export class User extends BaseEntity {
   @ManyToMany((type) => Role, (role) => role.users, { eager: true })
   @JoinTable({ name: 'user_roles' })
   roles: Role[];
+
+  @ManyToMany((type) => Book, (book) => book.authors)
+  @JoinTable({ name: 'user_books' })
+  books: Book[];
 }

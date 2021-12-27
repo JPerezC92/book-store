@@ -6,6 +6,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { LoggedInDto } from './dto';
 import { SigninDto } from './dto/signin.dto';
 import { SignupDto } from './dto/signup.dto';
 
@@ -15,13 +16,13 @@ export class AuthController {
 
   @Post('/signup')
   @UsePipes(ValidationPipe)
-  async signup(@Body() signupDto: SignupDto) {
-    return await this._authService.signup(signupDto);
+  signup(@Body() signupDto: SignupDto) {
+    return this._authService.signup(signupDto);
   }
 
   @Post('/signin')
   @UsePipes(ValidationPipe)
-  async signin(@Body() signinDto: SigninDto) {
-    return await this._authService.signin(signinDto);
+  signin(@Body() signinDto: SigninDto): Promise<LoggedInDto> {
+    return this._authService.signin(signinDto);
   }
 }
